@@ -1,36 +1,38 @@
-import throttle from 'lodash.throttle'
-const form = document.querySelector(".feedback-form");
-const formInput = {};
-const STORAGE_KEY = "feedback-form-state";
+import throttle from 'lodash.throttle';
 
-form.addEventListener("submit", onFormSubmit);
-form.addEventListener("input", throttle(onTextInput), 500);
+const form = document.querySelector('.feedback-form');
+let formInput = {};
+const STORAGE_KEY = 'feedback-form-state';
 
+form.addEventListener('submit', onFormSubmit);
+form.addEventListener('input', throttle(onTextInput), 500);
+form.addEventListener('input', onTextInput);
 populateFields();
 
 function onFormSubmit(evt) {
   evt.preventDefault();
-  evt.currentTarget.reset();
+  if (!form.email.value || !form.message.value) {
+    alert('Please complete all fields.');
+    return;
+  }
+
+  console.log(formInput);
   localStorage.removeItem(STORAGE_KEY);
+  evt.currentTarget.reset();
 }
 
 function onTextInput(evt) {
-  evt.preventDefault();
-
   formInput[evt.target.name] = evt.target.value;
-  
+
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formInput));
 }
 
 function populateFields() {
-  const previousFormState = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  const previousFormState = JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? {};
 
   if (previousFormState) {
     const { email, message } = previousFormState;
-
-    form.email.value = email;
-    form.message.value = message;
-
-    console.log(previousFormState);
+    form.email.value = email || '';
+    form.message.value = message || '';
   }
 }

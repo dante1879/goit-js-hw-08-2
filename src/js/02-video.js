@@ -13,7 +13,7 @@ function updateLocalStorage(data) {
 player.on('timeupdate', throttle(updateLocalStorage, 1000));
 
 try {
-  player.setCurrentTime(JSON.parse(localStorage.getItem(STORAGE_KEY) || 0));
+  player.setCurrentTime(JSON.parse(localStorage.getItem(STORAGE_KEY)) || 0);
 } catch (error) {
   console.log(error);
 }
