@@ -6,7 +6,7 @@ const STORAGE_KEY = 'feedback-form-state';
 
 form.addEventListener('submit', onFormSubmit);
 form.addEventListener('input', throttle(onTextInput), 500);
-form.addEventListener('input', onTextInput);
+
 populateFields();
 
 function onFormSubmit(evt) {
@@ -33,6 +33,8 @@ function populateFields() {
   if (previousFormState) {
     const { email, message } = previousFormState;
     form.email.value = email || '';
+    formInput.email = email || ''
     form.message.value = message || '';
+    formInput.message = message || ''
   }
 }
